@@ -1,45 +1,37 @@
 export function Pagination({ currentPage, pageCount, onPageChanged }) {
   // https://bulma.io/documentation/components/pagination/
+  const pages = Array.from({ length: pageCount }, (_, i) => i + 1);
   return (
     <nav className="pagination" role="navigation" aria-label="pagination">
-      <button className="pagination-previous">Previous page</button>
-      <button className="pagination-next">Next page</button>
+      <button
+        className="pagination-previous"
+        disabled={currentPage === 1}
+        onClick={() => onPageChanged(currentPage - 1)}
+      >
+        Previous page
+      </button>
+      <button
+        className="pagination-next"
+        disabled={currentPage === pageCount}
+        onClick={() => onPageChanged(currentPage + 1)}
+      >
+        Next page
+      </button>
       <ul className="pagination-list">
-        <li>
-          <button className="pagination-link" aria-label="Goto page 1">
-            1
-          </button>
-        </li>
-        <li>
-          <span className="pagination-ellipsis">&hellip;</span>
-        </li>
-        <li>
-          <button className="pagination-link" aria-label="Goto page 45">
-            45
-          </button>
-        </li>
-        <li>
-          <button
-            className="pagination-link is-current"
-            aria-label="Page 46"
-            aria-current="page"
-          >
-            46
-          </button>
-        </li>
-        <li>
-          <button className="pagination-link" aria-label="Goto page 47">
-            47
-          </button>
-        </li>
-        <li>
-          <span className="pagination-ellipsis">&hellip;</span>
-        </li>
-        <li>
-          <button className="pagination-link" aria-label="Goto page 86">
-            86
-          </button>
-        </li>
+        {pages.map((page) => (
+          <li key={page}>
+            <button
+              className={`pagination-link ${
+                page === currentPage ? "is-current" : ""
+              }`}
+              aria-label={`Goto page ${page}`}
+              aria-current={page === currentPage ? "page" : undefined}
+              onClick={() => onPageChanged(page)}
+            >
+              {page}
+            </button>
+          </li>
+        ))}
       </ul>
     </nav>
   );
